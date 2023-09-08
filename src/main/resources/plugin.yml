@@ -1,0 +1,7 @@
+name: FloatingItems
+main: me.seetch.floatingitem.FloatingItemPlugin
+version: "${pom.version}"
+api: 1.0.13
+authors:
+  - "https://github.com/seetch"
+website: "https://github.com/torchflower/Floating"
