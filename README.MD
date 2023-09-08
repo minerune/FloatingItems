@@ -1,6 +1,8 @@
 # FloatingItems
 🛸 This plugin can make floating items, that cannot be picked up by players!
 
+## For the plugin to work, you need to install [FormAPI](https://github.com/hteppl/FormAPI).
+
 **I welcome any ideas and pull requests to improve this plugin.**
 
 Commands
