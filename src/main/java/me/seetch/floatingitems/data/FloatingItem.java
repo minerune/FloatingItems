@@ -1,4 +1,4 @@
-package me.seetch.floatingitem.item;
+package me.seetch.floatingitems.data;
 
 import cn.nukkit.Player;
 import cn.nukkit.entity.Entity;
@@ -12,16 +12,12 @@ import lombok.Setter;
 
 import java.util.Random;
 
+@Getter
+@Setter
 public class FloatingItem {
 
-    @Getter
-    @Setter
     private String id;
-    @Getter
-    @Setter
     private Item item;
-    @Getter
-    @Setter
     private Position position;
 
     private final long random;
@@ -43,11 +39,8 @@ public class FloatingItem {
         addItemEntityPacket.z = (float) position.getZ();
         addItemEntityPacket.entityUniqueId = random;
         addItemEntityPacket.entityRuntimeId = random;
-        addItemEntityPacket.item = this.item;
-        addItemEntityPacket.metadata = new EntityMetadata()
-                .putLong(Entity.DATA_FLAGS, 1L << Entity.DATA_FLAG_IMMOBILE)
-                .putLong(Entity.DATA_LEAD_HOLDER_EID, -1)
-                .putFloat(Entity.DATA_SCALE, 0f);
+        addItemEntityPacket.item = item;
+        addItemEntityPacket.metadata = new EntityMetadata().putLong(Entity.DATA_FLAGS, 1L << Entity.DATA_FLAG_IMMOBILE).putLong(Entity.DATA_LEAD_HOLDER_EID, -1).putFloat(Entity.DATA_SCALE, 0f);
         return addItemEntityPacket;
     }
 
@@ -61,13 +54,14 @@ public class FloatingItem {
         return this;
     }
 
-    // Yeah, I know it's not cool ^-^
     public void update() {
-        delete();
+        // Despawn entity
+        despawn();
+        // Spawn new entity
         spawnForAll();
     }
 
-    public void delete() {
+    public void despawn() {
         RemoveEntityPacket removeEntityPacket = new RemoveEntityPacket();
         removeEntityPacket.eid = random;
         position.getLevel().getPlayers().values().forEach((player -> player.dataPacket(removeEntityPacket)));

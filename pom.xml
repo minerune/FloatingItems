@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>me.seetch.floatingitem</groupId>
+    <groupId>me.seetch.floatingitems</groupId>
     <artifactId>FloatingItems</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
+    <version>1.1.0</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -73,16 +73,20 @@
 
     <repositories>
         <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
+            <id>opencollab-repo-release</id>
+            <url>https://repo.opencollab.dev/maven-releases</url>
+        </repository>
+        <repository>
+            <id>opencollab-repo-snapshot</id>
+            <url>https://repo.opencollab.dev/maven-snapshots</url>
         </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>cn.powernukkitx</groupId>
-            <artifactId>powernukkitx</artifactId>
-            <version>1.20.10-r1</version>
+            <groupId>cn.nukkit</groupId>
+            <artifactId>nukkit</artifactId>
+            <version>1.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -90,13 +94,6 @@
             <artifactId>lombok</artifactId>
             <version>1.18.28</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>ru.hype</groupId>
-            <artifactId>FormAPI</artifactId>
-            <version>2.1.0.0-SNAPSHOT</version>
-            <systemPath>${project.basedir}/libs/FormAPI-2.1.0.0-SNAPSHOT.jar</systemPath>
-            <scope>system</scope>
         </dependency>
     </dependencies>
 

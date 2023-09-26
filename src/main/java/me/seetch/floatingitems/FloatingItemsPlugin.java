@@ -1,4 +1,4 @@
-package me.seetch.floatingitem;
+package me.seetch.floatingitems;
 
 import cn.nukkit.Player;
 import cn.nukkit.item.Item;
@@ -8,17 +8,18 @@ import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.ConfigSection;
 import lombok.Getter;
-import me.seetch.floatingitem.command.FloatingItemCommand;
-import me.seetch.floatingitem.item.FloatingItem;
-import me.seetch.floatingitem.util.ItemSerializer;
-import me.seetch.floatingitem.util.PositionSerializer;
+import me.seetch.floatingitems.command.FloatingItemCommand;
+import me.seetch.floatingitems.data.FloatingItem;
+import me.seetch.floatingitems.listener.EventListener;
+import me.seetch.floatingitems.util.ItemSerializer;
+import me.seetch.floatingitems.util.PositionSerializer;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
-public class FloatingItemPlugin extends PluginBase {
+public class FloatingItemsPlugin extends PluginBase {
 
     private final Object floatingItemLock = new Object();
 
@@ -26,7 +27,7 @@ public class FloatingItemPlugin extends PluginBase {
     private Map<String, FloatingItem> floatingItems = new HashMap<>();
     private static final AtomicLong id = new AtomicLong();
 
-    private static FloatingItemPlugin instance;
+    private static FloatingItemsPlugin instance;
 
     private File path;
 
@@ -34,11 +35,10 @@ public class FloatingItemPlugin extends PluginBase {
     public void onEnable() {
         instance = this;
 
-        saveResource("floating-items.yml");
-        path = new File(getDataFolder(), "floating-items.yml");
+        path = new File(getDataFolder(), "floatingitems.yml");
 
-        getServer().getCommandMap().register("FloatingItem", new FloatingItemCommand());
-        getServer().getPluginManager().addPermission(new Permission("floating-item.use", "Main floating item permission"));
+        getServer().getCommandMap().register(getName(), new FloatingItemCommand());
+        getServer().getPluginManager().addPermission(new Permission("floatingitem.use", "Main floating item permission"));
 
         this.getServer().getPluginManager().registerEvents(new EventListener(), this);
 
@@ -52,7 +52,7 @@ public class FloatingItemPlugin extends PluginBase {
         // Respawn floating items every 4 minutes.
         this.getServer().getScheduler().scheduleRepeatingTask(this, () -> {
             for (FloatingItem floatingItem : getFloatingItems().values()) {
-                floatingItem.delete();
+                floatingItem.despawn();
                 floatingItem.spawnForAll();
             }
         }, 20 * 60 * 4);
@@ -112,23 +112,17 @@ public class FloatingItemPlugin extends PluginBase {
         }
     }
 
-    public static FloatingItemPlugin get() {
+    public static FloatingItemsPlugin get() {
         return instance;
     }
 
     public FloatingItem spawn(Item item, Position position, Player player) {
-        if (item.getId() == 0) {
-            player.sendMessage("§cYou can't spawn floating air!");
-            return null;
+        FloatingItem floatingItem = new FloatingItem(nextId(), item, position);
+        if (player != null) {
+            floatingItems.put(floatingItem.getId(), floatingItem.spawn(player));
+        } else {
+            floatingItems.put(floatingItem.getId(), floatingItem.spawnForAll());
         }
-        FloatingItem floatingItem = new FloatingItem(nextId(), item, position);
-        floatingItems.put(floatingItem.getId(), floatingItem.spawn(player));
-        return floatingItem;
-    }
-
-    public FloatingItem spawnForAll(Item item, Position position) {
-        FloatingItem floatingItem = new FloatingItem(nextId(), item, position);
-        floatingItems.put(floatingItem.getId(), floatingItem.spawnForAll());
         return floatingItem;
     }
 
@@ -141,7 +135,7 @@ public class FloatingItemPlugin extends PluginBase {
     public void delete(String id) {
         FloatingItem floatingItem = search(id);
         if (floatingItem != null) {
-            floatingItem.delete();
+            floatingItem.despawn();
             floatingItems.remove(floatingItem.getId());
         }
     }

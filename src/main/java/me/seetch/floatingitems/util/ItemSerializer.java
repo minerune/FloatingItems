@@ -1,4 +1,4 @@
-package me.seetch.floatingitem.util;
+package me.seetch.floatingitems.util;
 
 import cn.nukkit.item.Item;
 import cn.nukkit.nbt.NBTIO;

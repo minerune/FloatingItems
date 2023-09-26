@@ -1,4 +1,4 @@
-package me.seetch.floatingitem.util;
+package me.seetch.floatingitems.util;
 
 import cn.nukkit.Server;
 import cn.nukkit.level.Position;
@@ -14,7 +14,7 @@ public class PositionSerializer {
         data.addProperty("x", position.getX());
         data.addProperty("y", position.getY());
         data.addProperty("z", position.getZ());
-        data.addProperty("level", position.getLevelName());
+        data.addProperty("level", position.getLevel().getName());
 
         return new Gson().toJson(data);
     }
