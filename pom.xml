@@ -74,7 +74,7 @@
     <distributionManagement>
         <repository>
             <id>minerune-repo</id>
-            <url>https:/repo.minerune.online/releases</url>
+            <url>https://repo.minerune.online/releases</url>
         </repository>
     </distributionManagement>
 
