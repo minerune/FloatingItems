@@ -71,6 +71,13 @@
         </plugins>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>minerune-repo</id>
+            <url>http://185.104.248.162/releases</url>
+        </repository>
+    </distributionManagement>
+
     <repositories>
         <repository>
             <id>opencollab-repo-release</id>
