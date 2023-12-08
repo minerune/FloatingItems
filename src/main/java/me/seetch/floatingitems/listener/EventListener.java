@@ -3,8 +3,11 @@ package me.seetch.floatingitems.listener;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.event.EventHandler;
+import cn.nukkit.event.EventPriority;
 import cn.nukkit.event.Listener;
+import cn.nukkit.event.entity.EntityLevelChangeEvent;
 import cn.nukkit.event.player.PlayerFormRespondedEvent;
+import cn.nukkit.event.player.PlayerRespawnEvent;
 import cn.nukkit.form.window.FormWindowCustom;
 import me.seetch.floatingitems.FloatingItemsPlugin;
 import me.seetch.floatingitems.data.FloatingItem;
@@ -12,7 +15,25 @@ import me.seetch.floatingitems.util.StringUtil;
 
 public class EventListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onPlayerRespawn(PlayerRespawnEvent event) {
+        this.updateFloatingItems(event.getPlayer());
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
+    public void onEntityLevelChange(EntityLevelChangeEvent event) {
+        if (event.getEntity() instanceof Player player) {
+            this.updateFloatingItems(player);
+        }
+    }
+
+    private void updateFloatingItems(Player player) {
+        for (var item : FloatingItemsPlugin.getFloatingItems().values()) {
+            item.spawnTo(player);
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onFormResponse(PlayerFormRespondedEvent event) {
         if (event.getWindow() instanceof FormWindowCustom formWindowCustom) {
             Player p = event.getPlayer();
