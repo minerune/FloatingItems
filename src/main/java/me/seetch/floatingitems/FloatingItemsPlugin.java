@@ -91,6 +91,10 @@ public class FloatingItemsPlugin extends PluginBase {
             }
         }
 
+        for (var item : FloatingItemsPlugin.getFloatingItems().values()) {
+            item.spawnToAll();
+        }
+
         synchronized (floatingItemLock) {
             floatingItems = map;
         }

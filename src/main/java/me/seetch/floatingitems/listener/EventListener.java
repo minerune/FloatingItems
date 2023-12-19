@@ -17,19 +17,19 @@ public class EventListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent event) {
-        this.updateFloatingItems(event.getPlayer());
+        this.updateFloatingItems();
     }
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntityLevelChange(EntityLevelChangeEvent event) {
         if (event.getEntity() instanceof Player player) {
-            this.updateFloatingItems(player);
+            this.updateFloatingItems();
         }
     }
 
-    private void updateFloatingItems(Player player) {
+    private void updateFloatingItems() {
         for (var item : FloatingItemsPlugin.getFloatingItems().values()) {
-            item.spawnTo(player);
+            item.spawnToAll();
         }
     }
 
